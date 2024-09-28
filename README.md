@@ -112,7 +112,7 @@ Learning Material Endpoints:
 POST /api/courses/:id/materials: Upload learning materials for a course (Educator only).
 DELETE /api/courses/:courseId/materials/:materialId: Remove a material from a course
 
-#screenshots
+## Screenshots
 Homepage:
 ![1st](https://github.com/user-attachments/assets/92677cf3-4f4f-4a7b-a314-9cbd80d7c0cd)
 Dashboard:
