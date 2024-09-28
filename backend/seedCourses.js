@@ -1,0 +1,376 @@
+require('dotenv').config(); // Load environment variables from .env file
+const mongoose = require('mongoose');
+const Course = require('./models/courseModel'); // Adjust the path as needed
+
+const initialCourses = [
+    {
+      name: "The Complete Web Development Bootcamp",
+      author: "Angela Yu",
+      price: 99.99,
+      thumbnail: "https://picsum.photos/200/300?random=1",
+      tags: ["web development", "programming"],
+    },
+    {
+      name: "Graphic Design Bootcamp",
+      author: "Joe Duffy",
+      price: 79.99,
+      thumbnail: "https://picsum.photos/200/300?random=2",
+      tags: ["design", "graphic design"],
+    },
+    {
+      name: "Data Science A-Z: Real-Life Data Science",
+      author: "Kirill Eremenko",
+      price: 89.99,
+      thumbnail: "https://picsum.photos/200/300?random=3",
+      tags: ["data science", "analytics"],
+    },
+    {
+      name: "Digital Marketing Masterclass",
+      author: "Philipp Klauser",
+      price: 59.99,
+      thumbnail: "https://picsum.photos/200/300?random=4",
+      tags: ["marketing", "digital marketing"],
+    },
+    {
+      name: "Music Production in Logic Pro X",
+      author: "Kenny Gioia",
+      price: 49.99,
+      thumbnail: "https://picsum.photos/200/300?random=5",
+      tags: ["music", "production"],
+    },
+    {
+      name: "Photography Masterclass: A Complete Guide",
+      author: "Philippe Smet",
+      price: 69.99,
+      thumbnail: "https://picsum.photos/200/300?random=6",
+      tags: ["photography", "editing"],
+    },
+    {
+      name: "Learn Spanish: Language Course",
+      author: "Juan Carlos",
+      price: 39.99,
+      thumbnail: "https://picsum.photos/200/300?random=7",
+      tags: ["language", "Spanish"],
+    },
+    {
+      name: "Entrepreneurship: How to Start a Business",
+      author: "Kevin John",
+      price: 99.99,
+      thumbnail: "https://picsum.photos/200/300?random=8",
+      tags: ["business", "entrepreneurship"],
+    },
+    {
+      name: "The Complete Financial Analyst Course",
+      author: "Mohammed Shafique",
+      price: 79.99,
+      thumbnail: "https://picsum.photos/200/300?random=9",
+      tags: ["finance", "investing"],
+    },
+    {
+      name: "Nutrition Masterclass: Your Complete Guide",
+      author: "Dr. John Doe",
+      price: 49.99,
+      thumbnail: "https://picsum.photos/200/300?random=10",
+      tags: ["health", "nutrition"],
+    },
+    {
+      name: "Personal Development Masterclass",
+      author: "Tony Robbins",
+      price: 39.99,
+      thumbnail: "https://picsum.photos/200/300?random=11",
+      tags: ["personal development", "productivity"],
+    },
+    {
+      name: "Creative Writing: A Master Class",
+      author: "Julian Friedmann",
+      price: 59.99,
+      thumbnail: "https://picsum.photos/200/300?random=12",
+      tags: ["writing", "creative writing"],
+    },
+    {
+      name: "Python for Data Science and Machine Learning",
+      author: "Jose Portilla",
+      price: 89.99,
+      thumbnail: "https://picsum.photos/200/300?random=13",
+      tags: ["software", "Python"],
+    },
+    {
+      name: "React - The Complete Guide",
+      author: "Maximilian Schwarzmüller",
+      price: 79.99,
+      thumbnail: "https://picsum.photos/200/300?random=14",
+      tags: ["development", "React"],
+    },
+    {
+      name: "Business Management: A Complete Guide",
+      author: "Paul D. Smith",
+      price: 49.99,
+      thumbnail: "https://picsum.photos/200/300?random=15",
+      tags: ["business", "management"],
+    },
+    {
+      name: "SQL for Data Science",
+      author: "Rav Ahuja",
+      price: 39.99,
+      thumbnail: "https://picsum.photos/200/300?random=16",
+      tags: ["data", "SQL"],
+    },
+    {
+      name: "Guitar Lessons for Beginners",
+      author: "John Smith",
+      price: 29.99,
+      thumbnail: "https://picsum.photos/200/300?random=17",
+      tags: ["music", "guitar"],
+    },
+    {
+      name: "UX Design Bootcamp",
+      author: "Jessica Smith",
+      price: 79.99,
+      thumbnail: "https://picsum.photos/200/300?random=18",
+      tags: ["design", "UX"],
+    },
+    {
+      name: "Landscape Photography: Mastering the Basics",
+      author: "Tommy Brown",
+      price: 59.99,
+      thumbnail: "https://picsum.photos/200/300?random=19",
+      tags: ["photography", "landscape"],
+    },
+    {
+      name: "JavaScript: Understanding the Weird Parts",
+      author: "Anthony Alicea",
+      price: 49.99,
+      thumbnail: "https://picsum.photos/200/300?random=20",
+      tags: ["coding", "JavaScript"],
+    },
+    {
+      name: "SEO Training Course by Moz",
+      author: "Rand Fishkin",
+      price: 39.99,
+      thumbnail: "https://picsum.photos/200/300?random=21",
+      tags: ["marketing", "SEO"],
+    },
+    {
+      name: "Fitness & Nutrition: Complete Course",
+      author: "Ashley Kelly",
+      price: 29.99,
+      thumbnail: "https://picsum.photos/200/300?random=22",
+      tags: ["health", "fitness"],
+    },
+    {
+      name: "Piano for Beginners: Learn to Play",
+      author: "Sara Lee",
+      price: 59.99,
+      thumbnail: "https://picsum.photos/200/300?random=23",
+      tags: ["music", "piano"],
+    },
+    {
+      name: "Business Sales: Sales Training Course",
+      author: "Ryan B.",
+      price: 49.99,
+      thumbnail: "https://picsum.photos/200/300?random=24",
+      tags: ["business", "sales"],
+    },
+    {
+      name: "Social Media Marketing Mastery",
+      author: "Jerry Banfield",
+      price: 39.99,
+      thumbnail: "https://picsum.photos/200/300?random=25",
+      tags: ["marketing", "social media"],
+    },
+    {
+      name: "The Complete Java Developer Course",
+      author: "Tim Buchalka",
+      price: 99.99,
+      thumbnail: "https://picsum.photos/200/300?random=26",
+      tags: ["programming", "Java"],
+    },
+    {
+      name: "Build Responsive Real World Websites",
+      author: "Jonas Schmedtmann",
+      price: 49.99,
+      thumbnail: "https://picsum.photos/200/300?random=27",
+      tags: ["web development", "design"],
+    },
+    {
+      name: "iOS 13 & Swift 5 - The Complete iOS App Development",
+      author: "Angela Yu",
+      price: 79.99,
+      thumbnail: "https://picsum.photos/200/300?random=28",
+      tags: ["development", "iOS"],
+    },
+    {
+      name: "Complete Python Bootcamp: Go from zero to hero",
+      author: "Jose Portilla",
+      price: 89.99,
+      thumbnail: "https://picsum.photos/200/300?random=29",
+      tags: ["programming", "Python"],
+    },
+    {
+      name: "Android App Development: Complete Guide",
+      author: "Rob Percival",
+      price: 99.99,
+      thumbnail: "https://picsum.photos/200/300?random=30",
+      tags: ["development", "Android"],
+    },
+    {
+      name: "The Complete Digital Marketing Course",
+      author: "Franklin Hatchett",
+      price: 59.99,
+      thumbnail: "https://picsum.photos/200/300?random=31",
+      tags: ["marketing", "digital marketing"],
+    },
+    {
+      name: "Ultimate Drawing Course - Beginner to Advanced",
+      author: "Josiah Brooks",
+      price: 39.99,
+      thumbnail: "https://picsum.photos/200/300?random=32",
+      tags: ["art", "drawing"],
+    },
+    {
+      name: "Excel VBA Programming - The Complete Guide",
+      author: "Daniel Strong",
+      price: 49.99,
+      thumbnail: "https://picsum.photos/200/300?random=33",
+      tags: ["finance", "Excel"],
+    },
+    {
+      name: "Introduction to Artificial Intelligence (AI)",
+      author: "Luis Serrano",
+      price: 79.99,
+      thumbnail: "https://picsum.photos/200/300?random=34",
+      tags: ["AI", "machine learning"],
+    },
+    {
+      name: "Learn Ethical Hacking From Scratch",
+      author: "Zahid Khan",
+      price: 49.99,
+      thumbnail: "https://picsum.photos/200/300?random=35",
+      tags: ["hacking", "security"],
+    },
+    {
+      name: "The Complete Ruby on Rails Developer Course",
+      author: "Mackenzie Child",
+      price: 99.99,
+      thumbnail: "https://picsum.photos/200/300?random=36",
+      tags: ["development", "Ruby"],
+    },
+    {
+      name: "The Complete Guide to Drawing & Painting",
+      author: "Marc Brunet",
+      price: 39.99,
+      thumbnail: "https://picsum.photos/200/300?random=37",
+      tags: ["art", "painting"],
+    },
+    {
+      name: "Complete Web Design: From Figma to Webflow",
+      author: "Josefina Montoya",
+      price: 59.99,
+      thumbnail: "https://picsum.photos/200/300?random=38",
+      tags: ["design", "Webflow"],
+    },
+    {
+      name: "The Ultimate Drawing Course - Beginner to Advanced",
+      author: "Josiah Brooks",
+      price: 49.99,
+      thumbnail: "https://picsum.photos/200/300?random=39",
+      tags: ["art", "drawing"],
+    },
+    {
+      name: "The Complete Guide to Digital Painting in Photoshop",
+      author: "Jacek Kuczynski",
+      price: 69.99,
+      thumbnail: "https://picsum.photos/200/300?random=40",
+      tags: ["art", "digital painting"],
+    },
+    {
+      name: "The Ultimate Guide to SEO",
+      author: "Lana F. Kelly",
+      price: 39.99,
+      thumbnail: "https://picsum.photos/200/300?random=41",
+      tags: ["marketing", "SEO"],
+    },
+    {
+      name: "Mastering the Art of French Cooking",
+      author: "Julia Child",
+      price: 49.99,
+      thumbnail: "https://picsum.photos/200/300?random=42",
+      tags: ["cooking", "French cuisine"],
+    },
+    {
+      name: "Complete Self-Defense Course: Learn How to Protect Yourself",
+      author: "Damon W. G.",
+      price: 39.99,
+      thumbnail: "https://picsum.photos/200/300?random=43",
+      tags: ["self-defense", "fitness"],
+    },
+    {
+      name: "Deep Learning A-Z: Hands-On Artificial Neural Networks",
+      author: "Kirill Eremenko",
+      price: 99.99,
+      thumbnail: "https://picsum.photos/200/300?random=44",
+      tags: ["AI", "deep learning"],
+    },
+    {
+      name: "The Science of Well-Being",
+      author: "Laurie Santos",
+      price: 49.99,
+      thumbnail: "https://picsum.photos/200/300?random=45",
+      tags: ["health", "well-being"],
+    },
+    {
+      name: "The Complete JavaScript Course 2021: From Zero to Expert!",
+      author: "Jonas Schmedtmann",
+      price: 79.99,
+      thumbnail: "https://picsum.photos/200/300?random=46",
+      tags: ["programming", "JavaScript"],
+    },
+    {
+      name: "The Ultimate Drawing Course: Beginner to Advanced",
+      author: "Josiah Brooks",
+      price: 59.99,
+      thumbnail: "https://picsum.photos/200/300?random=47",
+      tags: ["art", "drawing"],
+    },
+    {
+      name: "AWS Certified Solutions Architect - Associate 2020",
+      author: "Andrew Brown",
+      price: 99.99,
+      thumbnail: "https://picsum.photos/200/300?random=48",
+      tags: ["cloud computing", "AWS"],
+    },
+    {
+      name: "Introduction to Data Science with Python",
+      author: "Anirudh Sethi",
+      price: 69.99,
+      thumbnail: "https://picsum.photos/200/300?random=49",
+      tags: ["data science", "Python"],
+    },
+    {
+      name: "Learn to Code with Python",
+      author: "Zachary Johnson",
+      price: 39.99,
+      thumbnail: "https://picsum.photos/200/300?random=50",
+      tags: ["programming", "Python"],
+    },
+  ];
+  
+
+const seedCourses = async () => {
+  try {
+    await mongoose.connect(process.env.DB_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    await Course.deleteMany(); // Clear existing courses (optional)
+    await Course.insertMany(initialCourses);
+    console.log('Courses added successfully!');
+  } catch (error) {
+    console.error('Error adding courses:', error);
+  } finally {
+    mongoose.connection.close();
+  }
+};
+
+seedCourses();
