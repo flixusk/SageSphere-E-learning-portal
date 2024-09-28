@@ -94,23 +94,23 @@ node server.js
 npm run dev
 ```
 
-API Endpoints:
-User Endpoints:
-POST /api/users/register: Register a new user (Student or Educator).
-POST /api/users/login: Login a user and return a JWT token.
-GET /api/users/me: Fetch the current user's profile information.
+## API Endpoints:
+-**User Endpoints:**
+- POST /api/users/register: Register a new user (Student or Educator).
+- POST /api/users/login: Login a user and return a JWT token.
+- GET /api/users/me: Fetch the current user's profile information.
 
-Course Endpoints:
-POST /api/courses: Create a new course (Educator only).
-GET /api/courses: Fetch all courses or apply filters.
-PUT /api/courses/:id: Edit an existing course (Educator only).
-DELETE /api/courses/:id: Delete a course (Educator only).
-POST /api/courses/:id/enroll: Enroll in a course (Student only).
-POST /api/courses/:id/unenroll: Unenroll from a course (Student only).
+-**Course Endpoints:**
+- POST /api/courses: Create a new course (Educator only).
+- GET /api/courses: Fetch all courses or apply filters.
+- PUT /api/courses/:id: Edit an existing course (Educator only).
+- DELETE /api/courses/:id: Delete a course (Educator only).
+- POST /api/courses/:id/enroll: Enroll in a course (Student only).
+- POST /api/courses/:id/unenroll: Unenroll from a course (Student only).
 
-Learning Material Endpoints:
-POST /api/courses/:id/materials: Upload learning materials for a course (Educator only).
-DELETE /api/courses/:courseId/materials/:materialId: Remove a material from a course
+-**Learning Material Endpoints:**
+- POST /api/courses/:id/materials: Upload learning materials for a course (Educator only).
+- DELETE /api/courses/:courseId/materials/:materialId: Remove a material from a course
 
 ## Screenshots
 Homepage:
